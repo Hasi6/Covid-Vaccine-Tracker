@@ -5,7 +5,7 @@ const app = express();
 app.use(express.json());
 
 app.get('/hasi', (_req: Request, _res: Response) => {
-  console.log('hasi');
+  console.log('hasis');
   return _res.json({ name: 'Hello World' });
 });
 
