@@ -1,0 +1,10 @@
+emailService
+
+Check In Array
+apiKey
+apiSecret
+
+html || ''
+subject || testEmail
+text || ''
+to string or string[]

@@ -1,0 +1,25 @@
+FROM node:14.17-alpine
+  
+ENV PORT 5000
+
+ENV NODE_HEAPDUMP_OPTIONS nosignal
+
+WORKDIR "/app"
+
+COPY run-dev /bin
+COPY run-debug /bin
+
+RUN chmod 777 /bin/run-dev /bin/run-debug
+
+# Install nodemon for use with "dev" mode
+RUN npm install -g nodemon
+
+# Bundle app source and install dependencies
+COPY . /app
+RUN npm install
+
+EXPOSE 5000
+
+USER node
+
+CMD ["/bin/bash"]

@@ -1,0 +1,55 @@
+{
+  "name": "micro-sites-backend",
+  "version": "3.2.9",
+  "main": "./build/index.js",
+  "files": [
+    "build/**/*"
+  ],
+  "repository": "https://github.com/Hasi6/micro-services-common-modules.git",
+  "author": "Hasi6 <hasitha.chandula@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "watch": "tsc -w",
+    "build": "tsc",
+    "prod": "node ./build/index.js",
+    "migrate": "npx prisma migrate dev --name init",
+    "dev": "yarn run watch & nodemon ./build/index.js",
+    "server": "yarn run watch & nodemon ./build/server.js",
+    "test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register 'spec/*.js'"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.2",
+    "@types/chai": "^4.2.18",
+    "@types/express": "^4.17.11",
+    "@types/jsonwebtoken": "^8.5.1",
+    "@types/mocha": "^8.2.2",
+    "@types/morgan": "^1.9.2",
+    "@types/nodemailer": "^6.4.2",
+    "@types/passport": "^1.0.6",
+    "@types/uuid": "^8.3.0",
+    "chai": "^4.3.4",
+    "mocha": "^8.4.0",
+    "nodemon": "^2.0.7",
+    "prisma": "^2.24.1",
+    "ts-node": "^10.0.0",
+    "typescript": "^4.2.4"
+  },
+  "dependencies": {
+    "@prisma/client": "^2.24.1",
+    "axios": "^0.21.3",
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "express-async-errors": "^3.1.1",
+    "express-validator": "^6.11.1",
+    "glob": "^7.1.7",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.12.4",
+    "morgan": "^1.10.0",
+    "nodemailer": "^6.6.1",
+    "passport": "^0.4.1",
+    "passport-facebook": "^3.0.0",
+    "passport-google-oauth20": "^2.0.0",
+    "uuid": "^8.3.2"
+  }
+}
