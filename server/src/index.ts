@@ -22,7 +22,7 @@ app.use(logger('dev'));
 app.use('/', apiGatewayRouter);
 app.use('/', authRouter);
 
-const PORT = process.env.PORT || 7000;
+const PORT = process.env.PORT || 5000;
 
 app.all('*', async (_req: Request, _res: Response) => {
   throw new NotFoundError();
