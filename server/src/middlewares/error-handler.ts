@@ -10,13 +10,16 @@ import { CustomSuccessResponse } from '../shared/success-response';
 
 export const errorHandler = (_err: Error, _req: Request, _res: Response, _next: NextFunction) => {
   if (_err instanceof CustomError) {
-    return _res.status(_err.statusCode).json({ errors: _err.serializeErrors(), success: false, data: null });
+    return _res
+      .status(_err.statusCode)
+      .json({ errors: _err.serializeErrors(), success: false, data: null });
   }
 
   if (_err instanceof CustomSuccessResponse) {
-    return _res.status(_err.statusCode).json({ ..._err.serializeResponse(), success: true, errors: [] });
+    return _res
+      .status(_err.statusCode)
+      .json({ ..._err.serializeResponse(), success: true, errors: [] });
   }
-  console.log(_err);
   return _res.status(500).json({
     errors: [
       {
