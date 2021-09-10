@@ -4,6 +4,7 @@ import { SuccessResponse } from '../../../shared/execptions';
 const profileRouter: Router = Router();
 
 profileRouter.get('/', (_req: Request, _res: Response) => {
+  console.log('Health check');
   throw new SuccessResponse(200, {});
 });
 
