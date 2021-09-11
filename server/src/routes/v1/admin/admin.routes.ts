@@ -3,7 +3,7 @@ import { SuccessResponse } from '../../../shared/execptions';
 
 const adminRouter = Router();
 
-adminRouter.get('/healthCheck', async (_req: Request, _res: Response) => {
+adminRouter.get('/healthCheck', (_req: Request, _res: Response) => {
   throw new SuccessResponse(201, {});
 });
 

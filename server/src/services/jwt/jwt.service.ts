@@ -6,7 +6,7 @@
  */
 import * as jwt from 'jsonwebtoken';
 export interface IJwtPayload {
-  email: string;
+  NIC: string;
   id: string;
 }
 
