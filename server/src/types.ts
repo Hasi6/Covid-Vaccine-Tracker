@@ -1,8 +1,14 @@
-// import { UserDoc } from './data/user';
-// declare global {
-//   namespace Express {
-//     interface Request {
-//       user?: UserDoc;
-//     }
-//   }
-// }
+interface UserDoc {
+  NIC: string;
+  id: number;
+  role: string;
+}
+
+// @ts-ignore
+declare global {
+  namespace Express {
+    interface Request {
+      user?: UserDoc;
+    }
+  }
+}

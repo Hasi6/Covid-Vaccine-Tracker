@@ -15,7 +15,14 @@ export interface IJwtPayload {
 
 export class JwtService {
   public static generateToken(payload: IJwtPayload) {
-    return jwt.sign(payload, 'JWT');
+    const accessToken = jwt.sign(payload, 'JWT', {
+      expiresIn: 60 * 60 * 24,
+      algorithm: 'HS256',
+    });
+
+    const refreshToken = jwt.sign(payload, 'JWT');
+
+    return { accessToken, refreshToken };
   }
 
   public static verifyToken(token: string) {
@@ -27,7 +34,7 @@ export class JwtService {
     return await bcrypt.hash(password, salt);
   }
 
-  public static async compirePasswords(password: string, hash: string) {
+  public static async compirePasswords(password: string, hash: string): Promise<boolean> {
     return await bcrypt.compare(password, hash);
   }
 }

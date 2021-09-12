@@ -5,6 +5,8 @@ import { ILoginBody } from './../../models/auth';
 export class AuthService {
   public static async loginOrRegister(body: ILoginBody) {
     const { NIC, password } = body;
+
+    body.password = await JwtService.hashPassword(body.password);
     const user = await this.findUserFromNIC(NIC);
     if (!user) {
       return await this.registerUser(body);
