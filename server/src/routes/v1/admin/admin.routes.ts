@@ -1,4 +1,4 @@
-import { Request, response, Router } from 'express';
+import { Request, Response, Router } from 'express';
 import { SuccessResponse } from '../../../shared/execptions';
 
 const adminRouter = Router();

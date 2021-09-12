@@ -4,7 +4,6 @@ import 'express-async-errors';
 import logger from 'morgan';
 
 import { errorHandler } from './middlewares/error-handler';
-import apiGatewayRouter from './routes/v1/api_gateway/api.gateway';
 import authRouter from './routes/v1/auth/auth.routes';
 import { NotFoundError } from './shared/execptions';
 import './types';
@@ -19,8 +18,7 @@ app.use(function (req, res, next) {
 });
 app.use(json());
 app.use(logger('dev'));
-app.use('/', apiGatewayRouter);
-app.use('/', authRouter);
+app.use('/api/v1/auth', authRouter);
 
 const PORT = process.env.PORT || 5000;
 

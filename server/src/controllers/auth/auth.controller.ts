@@ -1,9 +1,14 @@
+import { AuthService } from './../../services/auth/auth.service';
 import { Request, Response } from 'express';
-import { BadRequestError, SuccessResponse } from '../../shared/execptions';
+import { BodyValidator } from '../../shared/decorators/body.validator';
+import { SuccessResponse } from '../../shared/execptions';
+import { ILoginBody } from './../../models/auth';
 
 export class AuthController {
-  public static async badRequest(_req: Request, _res: Response) {
-    throw new BadRequestError('Bad Request');
+  @BodyValidator()
+  public static async login(_req: Request, _res: Response) {
+    const body: ILoginBody = _req.body;
+    return await AuthService.loginOrRegister(body);
   }
 
   public static async success(_req: Request, _res: Response) {

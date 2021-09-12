@@ -13,11 +13,7 @@ function bodyValidator(): (
   functionName: string,
   descriptor: PropertyDescriptor
 ) => PropertyDescriptor {
-  return function (
-    _target: object,
-    _functionName: string,
-    descriptor: PropertyDescriptor
-  ) {
+  return function (_target: object, _functionName: string, descriptor: PropertyDescriptor) {
     const originalMethod: any = descriptor.value;
 
     descriptor.value = async function (...args: any) {
@@ -31,7 +27,7 @@ function bodyValidator(): (
         const output: object = await originalMethod.apply(this, args);
         return output;
       } catch (error) {
-        throw new UnauthorizedError('Unauthorized');
+        throw error;
       }
     };
 
