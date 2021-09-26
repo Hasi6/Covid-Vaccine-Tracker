@@ -2,11 +2,11 @@ import { useNavigation } from '@react-navigation/core';
 import React, { FC, useContext, useEffect } from 'react';
 import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
 import { GlobalContext } from '../../context';
+import { AUTH_TYPES } from '../../context/types';
 import { AuthService } from '../../services/auth/auth.service';
 
 const Loading: FC = (): JSX.Element => {
   const context: any = useContext(GlobalContext);
-  console.log(context);
   const navigate = useNavigation();
 
   useEffect(() => {
@@ -16,8 +16,15 @@ const Loading: FC = (): JSX.Element => {
   const checkAuthState = async () => {
     if (context?.authState?.auth === null) {
       try {
-        await AuthService.whoIAMI();
+        const res = await AuthService.whoIAMI();
         navigate.navigate('Dashboard');
+        context?.authDispatch({
+          type: AUTH_TYPES.SET_USER,
+          payload: {
+            auth: true,
+            user: res?.data?.data?.user,
+          },
+        });
       } catch (err) {
         navigate.navigate('Login');
         return;
@@ -31,9 +38,7 @@ const Loading: FC = (): JSX.Element => {
 
   return (
     <View style={styles.container}>
-      <Text>
-        <ActivityIndicator color='blue' />
-      </Text>
+      <ActivityIndicator color='blue' />
     </View>
   );
 };

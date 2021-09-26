@@ -1,12 +1,16 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useContext, useState } from 'react';
 import tailwind from 'tailwind-rn';
 import { View, Text, StyleSheet, Image, ActivityIndicator } from 'react-native';
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import { AuthService } from '../../services/auth/auth.service';
 import { useNavigation } from '@react-navigation/core';
+import { GlobalContext } from '../../context';
+import { AUTH_TYPES } from '../../context/types';
 
 const Login: FC = (): JSX.Element => {
   const navigate = useNavigation();
+  const context: any = useContext(GlobalContext);
+
   const [NIC, setNIC] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError]: any = useState(null);
@@ -20,8 +24,16 @@ const Login: FC = (): JSX.Element => {
         NIC: NIC ? NIC : undefined,
         password: password ? password : undefined,
       });
+
       setLoading(false);
-      navigate.navigate('Dashboard');
+      context?.authDispatch({
+        type: AUTH_TYPES.SET_USER,
+        payload: {
+          auth: null,
+          user: null,
+        },
+      });
+      navigate.navigate('Loading');
     } catch (err) {
       setLoading(false);
       setError('Inavlid Password');
