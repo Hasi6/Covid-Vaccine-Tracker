@@ -9,6 +9,7 @@ export class AuthController {
   @BodyValidator()
   public static async login(_req: Request, _res: Response) {
     const body: ILoginBody = _req.body;
+    console.log(body);
     const tokens = await AuthService.loginOrRegister(body);
     throw new SuccessResponse(200, tokens);
   }

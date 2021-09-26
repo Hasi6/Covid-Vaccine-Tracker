@@ -1,9 +1,33 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import tailwind from 'tailwind-rn';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image, ActivityIndicator } from 'react-native';
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
+import { AuthService } from '../../services/auth/auth.service';
+import { useNavigation } from '@react-navigation/core';
 
 const Login: FC = (): JSX.Element => {
+  const navigate = useNavigation();
+  const [NIC, setNIC] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError]: any = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const loginUser = async () => {
+    try {
+      setError(null);
+      setLoading(true);
+      await AuthService.login({
+        NIC: NIC ? NIC : undefined,
+        password: password ? password : undefined,
+      });
+      setLoading(false);
+      navigate.navigate('Dashboard');
+    } catch (err) {
+      setLoading(false);
+      setError('Inavlid Password');
+    }
+  };
+
   return (
     <View>
       <View style={[tailwind(`bg-blue-900 relative`), styles.mainContainer]}>
@@ -18,22 +42,26 @@ const Login: FC = (): JSX.Element => {
         <View style={[tailwind(`bg-white rounded-lg absolute -bottom-20`), styles.loginCard]}>
           <View style={styles.inputs}>
             <TextInput
+              value={NIC}
+              onChangeText={(e) => setNIC(e)}
               style={tailwind(`bg-white w-64 rounded-lg py-2 px-4 border-2 my-3 border-gray-400`)}
               placeholder='ID Number'
             />
             <TextInput
+              value={password}
+              onChangeText={(e) => setPassword(e)}
               style={tailwind(`bg-white w-64 rounded-lg py-2 px-4 border-2 my-3 border-gray-400`)}
               placeholder='Password'
               secureTextEntry={true}
             />
-            <Text style={tailwind(`text-right text-red-800 w-64`)}>Invalid Password</Text>
-            <TouchableOpacity>
+            {error && <Text style={tailwind(`text-right text-red-800 w-64`)}>{error}</Text>}
+            <TouchableOpacity onPress={loginUser}>
               <Text
                 style={tailwind(
                   `bg-blue-900 w-64 text-center py-2 rounded-full font-bold text-white mt-6`
                 )}
               >
-                Login
+                {loading ? <ActivityIndicator color={'white'} /> : 'Login'}
               </Text>
             </TouchableOpacity>
           </View>
