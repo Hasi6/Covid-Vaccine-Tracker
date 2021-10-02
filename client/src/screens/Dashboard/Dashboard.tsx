@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/core';
 import { Ionicons } from '@expo/vector-icons';
 import privateRoute from '../../components/hoc/authentication';
 import { GlobalContext } from '../../context';
-import { AUTH_TYPES } from '../../context/types';
+import { AUTH_TYPES, PROFILE_TYPES } from '../../context/types';
 import { CommonService } from '../../services/common/common.service';
 import { StorageService } from '../../services/storage/storage.service';
 import DetailsCard from '../../components/DetailsCard/DetailsCard';
@@ -42,8 +42,21 @@ const DashBoard: FC = (): JSX.Element => {
     }
   };
 
+  const getProfileData = async () => {
+    try {
+      const data = await CommonService.getPreviousDetails();
+      context.profileDispatch({
+        type: PROFILE_TYPES.SET_PROFILE,
+        payload: { profile: data },
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   useEffect(() => {
     getCovidDetails();
+    getProfileData();
   }, []);
 
   const updateDetails = () => {
@@ -63,8 +76,13 @@ const DashBoard: FC = (): JSX.Element => {
             {CommonService.getGreeting()}
           </Text>
           <Text style={[tailwind(`font-semibold text-left text-red-600`), styles.infoText]}>
-            You haven’t get the vaccine yet. Please find the nearest location below and get the
-            vaccine
+            {context?.profileState?.profile?.dose ? (
+              <Text style={[tailwind(`font-semibold text-left text-blue-600`), styles.infoText]}>
+                You have Vaccinated. Stay Safe
+              </Text>
+            ) : (
+              'You haven’t get the vaccine yet. Please find the nearest location below and get the vaccine'
+            )}
           </Text>
         </View>
 

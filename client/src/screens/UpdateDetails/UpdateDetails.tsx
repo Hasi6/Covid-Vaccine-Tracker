@@ -12,6 +12,7 @@ import privateRoute from '../../components/hoc/authentication';
 import ModalDropDown from '../../components/ModalDropDown/ModalDropDown';
 import { CommonService } from '../../services/common/common.service';
 import { storage } from '../../config/firebase';
+import { PROFILE_TYPES } from '../../context/types';
 
 const UpdateDetails = () => {
   const [loading, setLoading] = useState(false);
@@ -64,7 +65,7 @@ const UpdateDetails = () => {
 
   const profileDetails = async () => {
     try {
-      const data = await CommonService.getPreviousDetails();
+      const data = context?.profileState?.profile;
       setSelectedDose(data?.dose === 'FIRST' ? 1 : 2);
       setSelectedVaccine(data?.vaccineId);
       setSelectedDistrict(data?.districtId);
@@ -84,13 +85,22 @@ const UpdateDetails = () => {
     try {
       setLoading(true);
       await uploadImage();
-      const res = await CommonService.updateVaccinateDetails({
+      await CommonService.updateVaccinateDetails({
         dose: selectedDose === 1 ? 'FIRST' : 'SECOND',
         districtId: selectedDistrict,
         vaccineId: selectedVaccine,
       });
       setLoading(false);
-      console.log(res);
+      context.profileDispatch({
+        type: PROFILE_TYPES.SET_PROFILE,
+        payload: {
+          profile: {
+            dose: selectedDose === 1 ? 'FIRST' : 'SECOND',
+            districtId: selectedDistrict,
+            vaccineId: selectedVaccine,
+          },
+        },
+      });
       alert('Success');
     } catch (err) {
       setLoading(false);
