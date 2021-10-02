@@ -2,16 +2,19 @@ import React, { FC, useContext, useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import tailwind from 'tailwind-rn';
+import { useNavigation } from '@react-navigation/core';
+import { Ionicons } from '@expo/vector-icons';
 import privateRoute from '../../components/hoc/authentication';
 import { GlobalContext } from '../../context';
 import { AUTH_TYPES } from '../../context/types';
 import { CommonService } from '../../services/common/common.service';
 import { StorageService } from '../../services/storage/storage.service';
-import { Ionicons } from '@expo/vector-icons';
 import DetailsCard from '../../components/DetailsCard/DetailsCard';
 import LocationTable from '../../components/LocationTable/LocationTable';
 const DashBoard: FC = (): JSX.Element => {
   const context: any = useContext(GlobalContext);
+
+  const navigation = useNavigation();
 
   const logOut = async () => {
     await StorageService.removeItem('ACCESS_TOKEN');
@@ -43,6 +46,10 @@ const DashBoard: FC = (): JSX.Element => {
     getCovidDetails();
   }, []);
 
+  const updateDetails = () => {
+    navigation.navigate('UpdateDetails');
+  };
+
   return (
     <View>
       <View style={styles.mainContainer}>
@@ -67,7 +74,7 @@ const DashBoard: FC = (): JSX.Element => {
             styles.greetingContainer,
           ]}
         >
-          <TouchableOpacity style={[tailwind(`flex flex-row relative`)]}>
+          <TouchableOpacity style={[tailwind(`flex flex-row relative`)]} onPress={updateDetails}>
             <Text style={[tailwind(`font-semibold text-left text-blue-600`), styles.greetingText]}>
               Upload your vaccinae Details
             </Text>

@@ -6,6 +6,7 @@ import Loading from '../screens/Loding/Loading';
 import Login from '../screens/Login/Login';
 
 import NotFoundScreen from '../screens/NotFoundScreen';
+import UpdateDetails from '../screens/UpdateDetails/UpdateDetails';
 import { RootStackParamList } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 
@@ -25,6 +26,11 @@ function RootNavigator() {
       <Stack.Screen name='Loading' component={Loading} options={{ headerShown: false }} />
       <Stack.Screen name='Login' component={Login} options={{ headerShown: false }} />
       <Stack.Screen name='Dashboard' component={DashBoard} options={{ headerShown: false }} />
+      <Stack.Screen
+        name='UpdateDetails'
+        component={UpdateDetails}
+        options={{ headerShown: false }}
+      />
       <Stack.Screen name='NotFound' component={NotFoundScreen} options={{ title: 'Oops!' }} />
     </Stack.Navigator>
   );
