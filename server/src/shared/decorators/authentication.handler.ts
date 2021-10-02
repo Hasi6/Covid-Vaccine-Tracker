@@ -16,10 +16,10 @@ function authenticationHandler(): (
 ) => PropertyDescriptor {
   return function (_target: object, _functionName: string, descriptor: PropertyDescriptor) {
     const originalMethod: any = descriptor.value;
-
     descriptor.value = async function (...args: any) {
       try {
-        const [_, token] = args[0]?.headers?.authorization?.split(' ');
+        const [_, token] = args[0]?.headers?.authorization?.split(' ') || [null, null];
+
         if (!token) {
           throw new UnauthorizedError('Unauthorized');
         }
@@ -35,6 +35,7 @@ function authenticationHandler(): (
         const output: object = await originalMethod.apply(this, args);
         return output;
       } catch (error) {
+        console.log(error);
         if (error instanceof JsonWebTokenError) {
           throw new UnauthorizedError('Unauthorized');
         }

@@ -1,35 +1,46 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
-import { Modal, VStack, HStack, Text, Radio, Center, NativeBaseProvider } from 'native-base';
+import { StyleSheet, Text, View } from 'react-native';
+import { Modal } from 'native-base';
 import { FC } from 'react-native-table-component/node_modules/@types/react';
+import { TouchableHighlight, TouchableOpacity } from 'react-native-gesture-handler';
+import tailwind from 'tailwind-rn';
 
 interface IModalDropDownProps {
   showModal: boolean;
   setShowModal: (status: boolean) => void;
   title: string;
   list: any[];
-  onChange?: (data: string) => void;
+  onChange: (data: number) => void;
 }
 
 const ModalDropDown: FC<IModalDropDownProps> = ({
   showModal,
   setShowModal,
   title,
+  list,
+  onChange,
 }): JSX.Element => {
+  const onSelectItem = (id: number) => {
+    onChange(id);
+    setShowModal(false);
+  };
   return (
     <Modal isOpen={showModal} onClose={() => setShowModal(false)} size='lg'>
       <Modal.Content maxWidth='350'>
         <Modal.CloseButton />
         <Modal.Header>{title}</Modal.Header>
-        <Modal.Body>
-          <Center>
-            <VStack space={3}>
-              <HStack alignItems='center' justifyContent='space-between'>
-                <Text fontWeight='medium'>Sub Total</Text>
-              </HStack>
-            </VStack>
-          </Center>
-        </Modal.Body>
+        <View style={tailwind(`text-center`)}>
+          {list?.map((da, index) => (
+            <TouchableHighlight key={index} onPress={() => onSelectItem(da?.id)}>
+              <Text
+                onPress={() => onSelectItem(da?.id)}
+                style={[tailwind(`text-center`), styles.districtName]}
+              >
+                {da?.En}
+              </Text>
+            </TouchableHighlight>
+          ))}
+        </View>
       </Modal.Content>
     </Modal>
   );
@@ -37,4 +48,8 @@ const ModalDropDown: FC<IModalDropDownProps> = ({
 
 export default ModalDropDown;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  districtName: {
+    fontFamily: 'Poppins_600SemiBold',
+  },
+});

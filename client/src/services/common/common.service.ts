@@ -1,4 +1,5 @@
 import axios from 'axios';
+import http from '../http/http.service';
 export class CommonService {
   public static getGreeting() {
     const today = new Date();
@@ -31,6 +32,35 @@ export class CommonService {
     } catch (err) {
       console.error(err);
       return null;
+    }
+  }
+
+  public static async getAllDistricts() {
+    try {
+      const res = await http.get('/districts');
+      if (res?.data?.data) {
+        const data = res?.data?.data;
+        return data;
+      }
+      return [];
+    } catch (err) {
+      console.error(err);
+      return [];
+    }
+  }
+
+  public static async getAllVaccines() {
+    try {
+      const res = await http.get('/vaccine');
+      if (res?.data?.data) {
+        const data = res?.data?.data;
+
+        return data?.map((da: any) => ({ ...da, En: da?.title }));
+      }
+      return [];
+    } catch (err) {
+      console.error(err);
+      return [];
     }
   }
 }

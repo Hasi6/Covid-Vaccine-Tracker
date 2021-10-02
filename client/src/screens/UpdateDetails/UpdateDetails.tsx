@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Text, StyleSheet, View } from 'react-native';
 
 import { Input, Stack, Center, Heading } from 'native-base';
@@ -9,6 +9,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { GlobalContext } from '../../context';
 import privateRoute from '../../components/hoc/authentication';
 import ModalDropDown from '../../components/ModalDropDown/ModalDropDown';
+import { CommonService } from '../../services/common/common.service';
 
 const UpdateDetails = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -16,15 +17,62 @@ const UpdateDetails = () => {
   const navigation = useNavigation();
   const context: any = useContext(GlobalContext);
 
-  const [district, setDistrict] = useState();
-  const [vaccine, setVaccine] = useState();
-  const [dose, setDose] = useState();
+  const [district, setDistrict] = useState([]);
+  const [vaccine, setVaccine] = useState([]);
+  const [dose, setDose] = useState([
+    { id: 1, En: 'One' },
+    { id: 2, En: 'Two' },
+  ]);
+
+  const [selectedDistrict, setSelectedDistrict] = useState(0);
+  const [selectedVaccine, setSelectedVaccine] = useState(0);
+  const [selectedDose, setSelectedDose] = useState(0);
 
   const [modalTitle, setModalTitle] = useState('');
-  const [list, setList] = useState([]);
 
   const goBack = () => {
     navigation.goBack();
+  };
+
+  const onSelectFromDropDown = (value: number) => {
+    switch (modalTitle) {
+      case 'Select District': {
+        setSelectedDistrict(value);
+        break;
+      }
+      case 'Select Vaccine Type': {
+        setSelectedVaccine(value);
+        break;
+      }
+      case 'Select Dose': {
+        setSelectedDose(value);
+        break;
+      }
+    }
+  };
+
+  const generateList = (): any => {
+    switch (modalTitle) {
+      case 'Select District': {
+        return district;
+      }
+      case 'Select Vaccine Type': {
+        return vaccine;
+      }
+      case 'Select Dose': {
+        return dose;
+      }
+    }
+  };
+
+  const getAllDistricts = async () => {
+    const data = await CommonService.getAllDistricts();
+    setDistrict(data);
+  };
+
+  const getAllVaccines = async () => {
+    const data = await CommonService.getAllVaccines();
+    setVaccine(data);
   };
 
   const onDistrictClicked = () => {
@@ -41,9 +89,20 @@ const UpdateDetails = () => {
     setModalTitle('Select Dose');
   };
 
+  useEffect(() => {
+    getAllDistricts();
+    getAllVaccines();
+  }, []);
+
   return (
     <Center flex={1} px='3'>
-      <ModalDropDown showModal={isOpen} setShowModal={setIsOpen} list={list} title={modalTitle} />
+      <ModalDropDown
+        onChange={onSelectFromDropDown}
+        showModal={isOpen}
+        setShowModal={setIsOpen}
+        list={generateList()}
+        title={modalTitle}
+      />
 
       <Stack
         space={4}
@@ -77,7 +136,10 @@ const UpdateDetails = () => {
           style={[tailwind(`bg-gray-100 rounded-lg`), styles.inputFieldsContainer]}
         >
           <Text style={[tailwind(`px-5 py-3 text-lg`), styles.inputFields]}>
-            {context?.authState?.user?.NIC}
+            {selectedDistrict
+              ? //   @ts-ignore
+                district?.filter((da: any) => da?.id === selectedDistrict)[0]?.En
+              : 'Select District'}
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -85,7 +147,10 @@ const UpdateDetails = () => {
           style={[tailwind(`bg-gray-100 rounded-lg`), styles.inputFieldsContainer]}
         >
           <Text style={[tailwind(`px-5 py-3 text-lg`), styles.inputFields]}>
-            {context?.authState?.user?.NIC}
+            {selectedVaccine
+              ? //   @ts-ignore
+                vaccine?.filter((da: any) => da?.id === selectedVaccine)[0]?.title
+              : 'Select Vaccine Type'}
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -93,7 +158,10 @@ const UpdateDetails = () => {
           style={[tailwind(`bg-gray-100 rounded-lg`), styles.inputFieldsContainer]}
         >
           <Text style={[tailwind(`px-5 py-3 text-lg`), styles.inputFields]}>
-            {context?.authState?.user?.NIC}
+            {selectedDose
+              ? //   @ts-ignore
+                dose?.filter((da: any) => da?.id === selectedDose)[0]?.En
+              : 'Select Dose'}
           </Text>
         </TouchableOpacity>
       </Stack>
