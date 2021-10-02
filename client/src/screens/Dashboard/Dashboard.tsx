@@ -10,7 +10,6 @@ import { StorageService } from '../../services/storage/storage.service';
 import { Ionicons } from '@expo/vector-icons';
 import DetailsCard from '../../components/DetailsCard/DetailsCard';
 import LocationTable from '../../components/LocationTable/LocationTable';
-
 const DashBoard: FC = (): JSX.Element => {
   const context: any = useContext(GlobalContext);
 

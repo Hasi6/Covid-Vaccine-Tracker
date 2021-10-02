@@ -1,9 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { GlobalProvider } from './src/context';
 import Navigation from './src/navigation';
 import AppLoading from 'expo-app-loading';
+import { NativeBaseProvider } from 'native-base';
+import { GlobalProvider } from './src/context';
+
 import {
   useFonts,
   Poppins_600SemiBold,
@@ -23,10 +25,12 @@ const App = () => {
   } else {
     return (
       <GlobalProvider>
-        <SafeAreaProvider>
-          <Navigation />
-          <StatusBar />
-        </SafeAreaProvider>
+        <NativeBaseProvider>
+          <SafeAreaProvider>
+            <Navigation />
+            <StatusBar />
+          </SafeAreaProvider>
+        </NativeBaseProvider>
       </GlobalProvider>
     );
   }

@@ -5,7 +5,6 @@ import DashBoard from '../screens/Dashboard/Dashboard';
 import Loading from '../screens/Loding/Loading';
 import Login from '../screens/Login/Login';
 
-import ModalScreen from '../screens/ModalScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
 import { RootStackParamList } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
@@ -27,9 +26,6 @@ function RootNavigator() {
       <Stack.Screen name='Login' component={Login} options={{ headerShown: false }} />
       <Stack.Screen name='Dashboard' component={DashBoard} options={{ headerShown: false }} />
       <Stack.Screen name='NotFound' component={NotFoundScreen} options={{ title: 'Oops!' }} />
-      <Stack.Group screenOptions={{ presentation: 'modal' }}>
-        <Stack.Screen name='Modal' component={ModalScreen} />
-      </Stack.Group>
     </Stack.Navigator>
   );
 }
