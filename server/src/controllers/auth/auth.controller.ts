@@ -16,7 +16,6 @@ export class AuthController {
 
   @AuthenticationHandler()
   public static async whoAmI(_req: Request, _res: Response) {
-    console.log(_req.user);
     throw new SuccessResponse(200, { user: _req.user });
   }
 }

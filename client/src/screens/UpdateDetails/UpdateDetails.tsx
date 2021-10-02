@@ -57,17 +57,51 @@ const UpdateDetails = () => {
       quality: 1,
     });
 
-    console.log(result);
-
     if (!result.cancelled) {
       setImage(result.uri);
-      await uploadImage(result);
     }
   };
 
-  const uploadImage = async (image: any) => {
+  const profileDetails = async () => {
     try {
-      const response = await fetch(image.uri);
+      const data = await CommonService.getPreviousDetails();
+      setSelectedDose(data?.dose === 'FIRST' ? 1 : 2);
+      setSelectedVaccine(data?.vaccineId);
+      setSelectedDistrict(data?.districtId);
+      await storage()
+        .ref(`vaccine_images`)
+        .child(`${context?.authState?.user?.NIC}`)
+        .getDownloadURL()
+        .then(async (url) => {
+          setImage(url);
+        });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const updateDetails = async () => {
+    try {
+      setLoading(true);
+      await uploadImage();
+      const res = await CommonService.updateVaccinateDetails({
+        dose: selectedDose === 1 ? 'FIRST' : 'SECOND',
+        districtId: selectedDistrict,
+        vaccineId: selectedVaccine,
+      });
+      setLoading(false);
+      console.log(res);
+      alert('Success');
+    } catch (err) {
+      setLoading(false);
+      console.error(err);
+      alert('Something went Wrong, Please Try Again');
+    }
+  };
+
+  const uploadImage = async () => {
+    try {
+      const response = await fetch(image);
       const blob = await response.blob();
       const filePath = `${context?.authState?.user?.NIC}`;
       const ref = storage().ref(`vaccine_images/${filePath}`);
@@ -81,23 +115,14 @@ const UpdateDetails = () => {
         },
         async () => {
           try {
-            await storage()
-              .ref(`vaccine_images`)
-              .child(filePath)
-              .getDownloadURL()
-              .then(async (url) => {
-                console.log(url);
-              });
           } catch (err: any) {
             setLoading(false);
             console.error(err.message);
-            alert(err.message);
           }
         }
       );
     } catch (err) {
       console.log(err);
-      alert(JSON.stringify(err));
     }
   };
 
@@ -161,6 +186,7 @@ const UpdateDetails = () => {
   };
 
   useEffect(() => {
+    profileDetails();
     getAllDistricts();
     getAllVaccines();
   }, []);
@@ -243,7 +269,7 @@ const UpdateDetails = () => {
           style={{ width: 300, height: 200 }}
         />
       </View>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={updateDetails}>
         <Text style={[tailwind(`bg-blue-800 mt-4 py-4 px-40 rounded-full text-white`)]}>
           {loading ? <ActivityIndicator color='white' /> : 'Submit'}
         </Text>

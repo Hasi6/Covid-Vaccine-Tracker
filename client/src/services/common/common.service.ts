@@ -63,4 +63,24 @@ export class CommonService {
       return [];
     }
   }
+
+  public static async updateVaccinateDetails(body: any) {
+    try {
+      const res = await http.post('/profile', body);
+      return res;
+    } catch (err) {
+      console.error(err);
+      return null;
+    }
+  }
+
+  public static async getPreviousDetails() {
+    try {
+      const res = await http.get('/profile');
+      return res?.data?.data;
+    } catch (err) {
+      console.error(err);
+      return null;
+    }
+  }
 }

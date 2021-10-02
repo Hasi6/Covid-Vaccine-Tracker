@@ -35,7 +35,6 @@ function authenticationHandler(): (
         const output: object = await originalMethod.apply(this, args);
         return output;
       } catch (error) {
-        console.log(error);
         if (error instanceof JsonWebTokenError) {
           throw new UnauthorizedError('Unauthorized');
         }

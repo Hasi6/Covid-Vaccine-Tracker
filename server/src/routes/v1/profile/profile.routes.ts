@@ -1,11 +1,9 @@
-import { Request, Response, Router } from 'express';
-import { SuccessResponse } from '../../../shared/execptions';
+import { Router } from 'express';
+import { ProfileController } from '../../../controllers/profile/profile.controller';
 
 const profileRouter: Router = Router();
 
-profileRouter.get('/', (_req: Request, _res: Response) => {
-  console.log('Health check');
-  throw new SuccessResponse(200, {});
-});
+profileRouter.get('/', ProfileController.addProfile);
+profileRouter.post('/', ProfileController.addProfile);
 
 export default profileRouter;
