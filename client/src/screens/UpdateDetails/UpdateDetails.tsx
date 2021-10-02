@@ -11,6 +11,7 @@ import { GlobalContext } from '../../context';
 import privateRoute from '../../components/hoc/authentication';
 import ModalDropDown from '../../components/ModalDropDown/ModalDropDown';
 import { CommonService } from '../../services/common/common.service';
+import { storage } from '../../config/firebase';
 
 const UpdateDetails = () => {
   const [loading, setLoading] = useState(false);
@@ -21,7 +22,7 @@ const UpdateDetails = () => {
 
   const [district, setDistrict] = useState([]);
   const [vaccine, setVaccine] = useState([]);
-  const [dose, setDose] = useState([
+  const [dose] = useState([
     { id: 1, En: 'One' },
     { id: 2, En: 'Two' },
   ]);
@@ -60,6 +61,43 @@ const UpdateDetails = () => {
 
     if (!result.cancelled) {
       setImage(result.uri);
+      await uploadImage(result);
+    }
+  };
+
+  const uploadImage = async (image: any) => {
+    try {
+      const response = await fetch(image.uri);
+      const blob = await response.blob();
+      const filePath = `${context?.authState?.user?.NIC}`;
+      const ref = storage().ref(`vaccine_images/${filePath}`);
+      ref.put(blob).on(
+        'state_changed',
+        (snapshot) => {
+          const percentage = Math.floor((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+        },
+        (error) => {
+          console.log(error);
+        },
+        async () => {
+          try {
+            await storage()
+              .ref(`vaccine_images`)
+              .child(filePath)
+              .getDownloadURL()
+              .then(async (url) => {
+                console.log(url);
+              });
+          } catch (err: any) {
+            setLoading(false);
+            console.error(err.message);
+            alert(err.message);
+          }
+        }
+      );
+    } catch (err) {
+      console.log(err);
+      alert(JSON.stringify(err));
     }
   };
 
@@ -199,9 +237,7 @@ const UpdateDetails = () => {
         </TouchableOpacity>
       </Stack>
       <View style={tailwind(`relative`)}>
-        <TouchableOpacity style={tailwind(`text-3xl left-72 top-2 mb-3`)}>
-          <Ionicons name='camera-outline' style={tailwind(`text-4xl `)} onPress={pickImage} />
-        </TouchableOpacity>
+        <Ionicons name='camera-outline' style={tailwind(`text-4xl `)} onPress={pickImage} />
         <Image
           source={{ uri: image ? image : placeHolderImage }}
           style={{ width: 300, height: 200 }}
