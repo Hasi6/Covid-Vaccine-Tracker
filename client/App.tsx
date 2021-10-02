@@ -3,13 +3,32 @@ import React from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { GlobalProvider } from './src/context';
 import Navigation from './src/navigation';
-export default function App() {
-  return (
-    <GlobalProvider>
-      <SafeAreaProvider>
-        <Navigation />
-        <StatusBar />
-      </SafeAreaProvider>
-    </GlobalProvider>
-  );
-}
+import AppLoading from 'expo-app-loading';
+import {
+  useFonts,
+  Poppins_600SemiBold,
+  Poppins_400Regular,
+  Poppins_300Light,
+} from '@expo-google-fonts/poppins';
+
+const App = () => {
+  let [fontsLoaded] = useFonts({
+    Poppins_600SemiBold,
+    Poppins_400Regular,
+    Poppins_300Light,
+  });
+
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  } else {
+    return (
+      <GlobalProvider>
+        <SafeAreaProvider>
+          <Navigation />
+          <StatusBar />
+        </SafeAreaProvider>
+      </GlobalProvider>
+    );
+  }
+};
+export default App;

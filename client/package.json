@@ -12,12 +12,14 @@
     "preset": "jest-expo"
   },
   "dependencies": {
-    "@expo/vector-icons": "^12.0.0",
+    "@expo-google-fonts/poppins": "^0.2.0",
+    "@expo/vector-icons": "^12.0.5",
     "@react-navigation/bottom-tabs": "^6.0.5",
     "@react-navigation/native": "^6.0.2",
     "@react-navigation/native-stack": "^6.1.0",
     "axios": "^0.21.4",
     "expo": "~42.0.1",
+    "expo-app-loading": "^1.1.2",
     "expo-asset": "~8.3.2",
     "expo-constants": "~11.0.1",
     "expo-font": "~9.2.1",
@@ -33,6 +35,7 @@
     "react-native-reanimated": "~2.2.0",
     "react-native-safe-area-context": "3.2.0",
     "react-native-screens": "~3.4.0",
+    "react-native-table-component": "^1.2.1",
     "react-native-web": "~0.13.12",
     "tailwind-rn": "^3.0.1"
   },
@@ -40,6 +43,7 @@
     "@babel/core": "^7.9.0",
     "@types/react": "~16.9.35",
     "@types/react-native": "~0.63.2",
+    "@types/react-native-table-component": "^1.2.1",
     "jest-expo": "~41.0.0-beta.0",
     "typescript": "~4.0.0"
   },
