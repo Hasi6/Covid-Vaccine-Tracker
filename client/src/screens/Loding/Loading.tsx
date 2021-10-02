@@ -34,6 +34,8 @@ const Loading: FC = (): JSX.Element => {
       navigate.navigate('Login');
       return;
     }
+    navigate.navigate('Dashboard');
+    return;
   };
 
   return (

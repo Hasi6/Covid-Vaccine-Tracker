@@ -1,17 +1,19 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { Text, StyleSheet, View } from 'react-native';
-
+import { Text, StyleSheet, View, Platform, Button, Image, ActivityIndicator } from 'react-native';
 import { Input, Stack, Center, Heading } from 'native-base';
 import { Ionicons } from '@expo/vector-icons';
 import tailwind from 'tailwind-rn';
 import { useNavigation } from '@react-navigation/core';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import * as ImagePicker from 'expo-image-picker';
+
 import { GlobalContext } from '../../context';
 import privateRoute from '../../components/hoc/authentication';
 import ModalDropDown from '../../components/ModalDropDown/ModalDropDown';
 import { CommonService } from '../../services/common/common.service';
 
 const UpdateDetails = () => {
+  const [loading, setLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
   const navigation = useNavigation();
@@ -29,6 +31,37 @@ const UpdateDetails = () => {
   const [selectedDose, setSelectedDose] = useState(0);
 
   const [modalTitle, setModalTitle] = useState('');
+
+  const [image, setImage] = useState<any>(null);
+
+  const placeHolderImage =
+    'https://image.shutterstock.com/image-vector/ui-image-placeholder-wireframes-apps-260nw-1037719204.jpg';
+
+  useEffect(() => {
+    (async () => {
+      if (Platform.OS !== 'web') {
+        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (status !== 'granted') {
+          alert('Sorry, we need camera roll permissions to make this work!');
+        }
+      }
+    })();
+  }, []);
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.cancelled) {
+      setImage(result.uri);
+    }
+  };
 
   const goBack = () => {
     navigation.goBack();
@@ -165,6 +198,20 @@ const UpdateDetails = () => {
           </Text>
         </TouchableOpacity>
       </Stack>
+      <View style={tailwind(`relative`)}>
+        <TouchableOpacity style={tailwind(`text-3xl left-72 top-2 mb-3`)}>
+          <Ionicons name='camera-outline' style={tailwind(`text-4xl `)} onPress={pickImage} />
+        </TouchableOpacity>
+        <Image
+          source={{ uri: image ? image : placeHolderImage }}
+          style={{ width: 300, height: 200 }}
+        />
+      </View>
+      <TouchableOpacity>
+        <Text style={[tailwind(`bg-blue-800 mt-4 py-4 px-40 rounded-full text-white`)]}>
+          {loading ? <ActivityIndicator color='white' /> : 'Submit'}
+        </Text>
+      </TouchableOpacity>
     </Center>
   );
 };
