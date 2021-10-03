@@ -73,8 +73,8 @@ const AdminDashBoard = () => {
         type: ALERT_TYPES.SET_ALERT,
         payload: {
           alert: {
-            status: 'success',
-            title: 'Details Updated Successfully',
+            status: 'error',
+            title: 'Something went wrong, please try again',
           },
         },
       });

@@ -15,6 +15,7 @@ export class LocationController {
 
   @AdminAuthHandler()
   public static async addLocation(_req: Request, _res: Response) {
+    console.log(_req.body);
     const data = await LocationService.addLocation(_req.body);
     throw new SuccessResponse(201, data);
   }

@@ -22,6 +22,7 @@ export class LocationService {
     try {
       return await prismaLocation.create({ data });
     } catch (err) {
+      console.log(err);
       return [];
     }
   }

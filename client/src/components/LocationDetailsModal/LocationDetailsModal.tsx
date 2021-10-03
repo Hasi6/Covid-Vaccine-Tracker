@@ -1,8 +1,11 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useContext, useState } from 'react';
 import { HStack, Modal, VStack, Text, Button, Select, CheckIcon, Input } from 'native-base';
-import { StyleSheet, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import tailwind from 'tailwind-rn';
 import { DatePicker } from 'react-native-woodpicker';
+import { GlobalContext } from '../../context';
+import { ALERT_TYPES } from '../../context/types';
+import { CommonService } from '../../services/common/common.service';
 interface ILocationDetailsModalProps {
   showModal: boolean;
   setShowModal: (status: boolean) => void;
@@ -14,6 +17,8 @@ const LocationDetailsModal: FC<ILocationDetailsModalProps> = ({
   setShowModal,
   districts,
 }): JSX.Element => {
+  const context: any = useContext(GlobalContext);
+
   const [fromDate, setFromDate] = useState<any>();
   const [toDate, setToDate] = useState<any>();
   const handleText = (): string => (fromDate ? fromDate.toDateString() : 'No Date Selected');
@@ -21,6 +26,8 @@ const LocationDetailsModal: FC<ILocationDetailsModalProps> = ({
 
   const [fromTime, setFromTime] = useState('');
   const [toTime, setToTime] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [location, setLocation] = useState('');
 
   const [selectedDistrict, setSelectedDistrict]: any = useState(null);
 
@@ -58,6 +65,29 @@ const LocationDetailsModal: FC<ILocationDetailsModalProps> = ({
   const handleToDate = (e: any) => {
     setToDate(e);
   };
+
+  const addLocation = async () => {
+    try {
+      context.alertDispatch({
+        type: ALERT_TYPES.REMOVE_ALERT,
+      });
+      setLoading(true);
+      await CommonService.addVaccineLocation({
+        En: location,
+        districtId: selectedDistrict?.id,
+        fromDate,
+        toDate,
+        fromTime,
+        toTime,
+      });
+      alert('Operation Success');
+      setLoading(false);
+    } catch (err) {
+      setLoading(false);
+      alert('Something Went Wrong, Please Try Again');
+    }
+  };
+
   return (
     <View>
       <Modal isOpen={showModal} onClose={() => setShowModal(false)} size='lg'>
@@ -87,6 +117,7 @@ const LocationDetailsModal: FC<ILocationDetailsModalProps> = ({
               <HStack alignItems='center' justifyContent='space-between'>
                 <Text fontWeight='medium'>Location</Text>
                 <Input
+                  onChangeText={(e) => setLocation(e)}
                   placeholder='Location'
                   w={{
                     base: '68%',
@@ -158,10 +189,10 @@ const LocationDetailsModal: FC<ILocationDetailsModalProps> = ({
           </Modal.Body>
           <Button
             color='darkblue'
-            onPress={() => console.log()}
+            onPress={addLocation}
             style={tailwind(`bg-blue-800 rounded-full mx-3 mb-3`)}
           >
-            Submit
+            {loading ? <ActivityIndicator color='white' /> : 'Submit'}
           </Button>
         </Modal.Content>
       </Modal>

@@ -103,4 +103,24 @@ export class CommonService {
       return null;
     }
   }
+
+  public static async addVaccineLocation(body: any) {
+    try {
+      const res = await http.post(`/location`, body);
+      return res?.data?.data;
+    } catch (err) {
+      console.error(err);
+      return null;
+    }
+  }
+
+  public static async getVaccinateLocations(body: any) {
+    try {
+      const res = await http.get(`/location`);
+      return res?.data?.data;
+    } catch (err) {
+      console.error(err);
+      return null;
+    }
+  }
 }
