@@ -6,6 +6,7 @@ import logger from 'morgan';
 import { errorHandler } from './middlewares/error-handler';
 import authRouter from './routes/v1/auth/auth.routes';
 import districtsRouter from './routes/v1/districts/districts.routes';
+import locationRouter from './routes/v1/location/location.routes';
 import profileRouter from './routes/v1/profile/profile.routes';
 import vaccineRouter from './routes/v1/vaccine/vaccine.routes';
 import { NotFoundError } from './shared/execptions';
@@ -25,6 +26,7 @@ app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/districts', districtsRouter);
 app.use('/api/v1/vaccine', vaccineRouter);
 app.use('/api/v1/profile', profileRouter);
+app.use('/api/v1/location', locationRouter);
 
 const PORT = process.env.PORT || 5000;
 

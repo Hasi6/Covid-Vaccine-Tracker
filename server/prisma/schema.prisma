@@ -86,6 +86,8 @@ model Location {
   Ta String?
   district District @relation(fields: [districtId], references: [id])
   districtId Int
+  fromDate DateTime
+  toDate DateTime
   createdAt DateTime? @default(now())
   updatedAt DateTime? @updatedAt @default(now())
 }
