@@ -16,7 +16,6 @@ const AlertComponent = () => {
     });
   };
 
-  console.log(context);
   return (
     <Stack space={3} w='100%' style={tailwind(`relative top-64 z-50`)}>
       {alert ? (

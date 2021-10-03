@@ -34,11 +34,9 @@ http.interceptors.request.use((config) => {
 
 http.interceptors.response.use(
   (response: any) => {
-    // console.log(`http response ${response.config.url}`, response);
     return response;
   },
   (error: { response: any }) => {
-    // console.error(`http response ${error.config.url}`, error);
     return Promise.reject(error.response);
   }
 );

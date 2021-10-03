@@ -39,7 +39,6 @@ const DetailsModal: FC<IDetailsModalProps> = ({
           .child(`${title}`)
           .getDownloadURL()
           .then(async (url) => {
-            console.log(url);
             setImage(url);
           });
       } catch (err) {}
