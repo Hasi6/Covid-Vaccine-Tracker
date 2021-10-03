@@ -4,7 +4,7 @@ import http from '../http/http.service';
 export class AuthService {
   public static async login(body: object) {
     try {
-      const res = await http.post('/auth/login', body);
+      const res = await http.post(`/auth/login?date=${Date.now()}`, body);
       await StorageService.saveItem('ACCESS_TOKEN', res.data?.data?.accessToken);
       return res;
     } catch (err) {
@@ -14,7 +14,7 @@ export class AuthService {
 
   public static async whoIAMI() {
     try {
-      const res = await http.get('/auth/whoAmI');
+      const res = await http.get(`/auth/whoAmI?date=${Date.now()}`);
       return res;
     } catch (err) {
       throw err;

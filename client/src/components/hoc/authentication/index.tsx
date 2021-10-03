@@ -26,7 +26,6 @@ export default function privateRoute(ComposedComponent: any) {
       if (context?.authState?.auth === null) {
         try {
           const res = await AuthService.whoIAMI();
-          navigate.navigate('Dashboard');
           setLoaded(true);
           setAuthenticated(true);
           context?.authDispatch({
@@ -36,17 +35,20 @@ export default function privateRoute(ComposedComponent: any) {
               user: res?.data?.data?.user,
             },
           });
+          navigate.navigate('Dashboard');
         } catch (err) {
-          navigate.navigate('Login');
           setLoaded(true);
           setAuthenticated(true);
+          navigate.navigate('Login');
           return;
         }
       }
       if (context?.authState?.auth === false) {
         setAuthenticated(false);
         navigate.navigate('Login');
+        return;
       }
+      navigate.navigate('Dashboard');
     };
 
     return (

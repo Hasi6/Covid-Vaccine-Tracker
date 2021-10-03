@@ -10,7 +10,11 @@ export class LocationService {
           },
         },
         include: {
-          district: true,
+          district: {
+            include: {
+              province: true,
+            },
+          },
         },
       });
     } catch (err) {

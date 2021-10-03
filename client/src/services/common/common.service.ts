@@ -37,7 +37,7 @@ export class CommonService {
 
   public static async getAllDistricts() {
     try {
-      const res = await http.get('/districts');
+      const res = await http.get(`/districts?date=${Date.now()}`);
       if (res?.data?.data) {
         const data = res?.data?.data;
         return data;
@@ -51,7 +51,7 @@ export class CommonService {
 
   public static async getAllVaccines() {
     try {
-      const res = await http.get('/vaccine');
+      const res = await http.get(`/vaccine?date=${Date.now()}`);
       if (res?.data?.data) {
         const data = res?.data?.data;
 
@@ -66,7 +66,7 @@ export class CommonService {
 
   public static async updateVaccinateDetails(body: any) {
     try {
-      const res = await http.post('/profile', body);
+      const res = await http.post(`/profile?date=${Date.now()}`, body);
       return res;
     } catch (err) {
       console.error(err);
@@ -76,7 +76,7 @@ export class CommonService {
 
   public static async getPreviousDetails() {
     try {
-      const res = await http.get('/profile');
+      const res = await http.get(`/profile?date=${Date.now()}`);
       return res?.data?.data;
     } catch (err) {
       console.error(err);
@@ -86,7 +86,7 @@ export class CommonService {
 
   public static async findUserDetailsFromIDNumber(idNumber: string) {
     try {
-      const res = await http.get(`/profile/${idNumber}`);
+      const res = await http.get(`/profile/${idNumber}?date=${Date.now()}`);
       return res?.data?.data;
     } catch (err) {
       console.error(err);
@@ -96,7 +96,7 @@ export class CommonService {
 
   public static async updateVaccination(idNumber: string, status: boolean) {
     try {
-      const res = await http.put(`/profile/${idNumber}`, { status });
+      const res = await http.put(`/profile/${idNumber}?date=${Date.now()}`, { status });
       return res?.data?.data;
     } catch (err) {
       console.error(err);
@@ -106,7 +106,7 @@ export class CommonService {
 
   public static async addVaccineLocation(body: any) {
     try {
-      const res = await http.post(`/location`, body);
+      const res = await http.post(`/location?date=${Date.now()}`, body);
       return res?.data?.data;
     } catch (err) {
       console.error(err);
@@ -114,9 +114,9 @@ export class CommonService {
     }
   }
 
-  public static async getVaccinateLocations(body: any) {
+  public static async getVaccinateLocations() {
     try {
-      const res = await http.get(`/location`);
+      const res = await http.get(`/location?date=${Date.now()}`);
       return res?.data?.data;
     } catch (err) {
       console.error(err);

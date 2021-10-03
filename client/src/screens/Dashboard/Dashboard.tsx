@@ -11,6 +11,7 @@ import { CommonService } from '../../services/common/common.service';
 import { StorageService } from '../../services/storage/storage.service';
 import DetailsCard from '../../components/DetailsCard/DetailsCard';
 import LocationTable from '../../components/LocationTable/LocationTable';
+import moment from 'moment';
 const DashBoard: FC = (): JSX.Element => {
   const context: any = useContext(GlobalContext);
 
@@ -30,6 +31,8 @@ const DashBoard: FC = (): JSX.Element => {
     localCases: null,
     globalCases: null,
   });
+
+  const [vaccinateLocations, setVaccinateLocations] = useState([]);
 
   const getCovidDetails = async () => {
     try {
@@ -54,9 +57,30 @@ const DashBoard: FC = (): JSX.Element => {
     }
   };
 
+  const getAllLocations = async () => {
+    try {
+      const res = await CommonService.getVaccinateLocations();
+      let allData: any = [];
+      res?.forEach((da: any) => {
+        let data = [
+          da?.district?.province?.En,
+          da?.district?.En,
+          moment(da?.toDate).format('DD/MM/YYYY'),
+          `${da?.fromTime} -- ${da?.toTime}`,
+        ];
+        allData = [...allData, data];
+      });
+
+      setVaccinateLocations(allData);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   useEffect(() => {
     getCovidDetails();
     getProfileData();
+    getAllLocations();
   }, []);
 
   const updateDetails = () => {
@@ -134,7 +158,7 @@ const DashBoard: FC = (): JSX.Element => {
       </View>
       <View style={[tailwind(`mt-5`)]}>
         <Text style={[tailwind(`mb-2 mx-6`), styles.countryText]}>Vaccinate Locations</Text>
-        <LocationTable />
+        <LocationTable locations={vaccinateLocations} />
       </View>
     </View>
   );
