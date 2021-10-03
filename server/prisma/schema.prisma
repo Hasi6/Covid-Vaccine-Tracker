@@ -38,6 +38,7 @@ model Profile {
   dose DOSE @default(FIRST)
   user   User    @relation(fields: [userId], references: [id])
   userId Int     @unique
+  vaccinateConfirm Boolean     @default(false)
   createdAt        DateTime           @default(now())
   updatedAt        DateTime           @updatedAt @default(now())
 }

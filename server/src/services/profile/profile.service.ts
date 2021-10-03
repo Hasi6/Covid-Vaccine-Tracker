@@ -46,7 +46,33 @@ export class ProfileService {
         where: {
           NIC,
         },
-        include: { profile: true },
+        include: {
+          profile: {
+            include: {
+              district: true,
+              vaccine: true,
+            },
+          },
+        },
+      });
+    } catch (err) {
+      return null;
+    }
+  }
+
+  public static async updateProfileDetails(NIC: string, status: boolean) {
+    try {
+      return await prismaUser.update({
+        where: {
+          NIC,
+        },
+        data: {
+          profile: {
+            update: {
+              vaccinateConfirm: status,
+            },
+          },
+        },
       });
     } catch (err) {
       return null;

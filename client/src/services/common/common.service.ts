@@ -93,4 +93,14 @@ export class CommonService {
       return null;
     }
   }
+
+  public static async updateVaccination(idNumber: string, status: boolean) {
+    try {
+      const res = await http.put(`/profile/${idNumber}`, { status });
+      return res?.data?.data;
+    } catch (err) {
+      console.error(err);
+      return null;
+    }
+  }
 }

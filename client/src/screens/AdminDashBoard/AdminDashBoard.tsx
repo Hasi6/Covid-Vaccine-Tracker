@@ -3,6 +3,7 @@ import React, { useContext, useState } from 'react';
 import { StyleSheet, Text, View, TextInput, ActivityIndicator } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import tailwind from 'tailwind-rn';
+import DetailsModal from '../../components/DetailsModal/DetailsModal';
 import privateAdminRoute from '../../components/hoc/authorization';
 import { GlobalContext } from '../../context';
 import { ALERT_TYPES, AUTH_TYPES } from '../../context/types';
@@ -26,10 +27,12 @@ const AdminDashBoard = () => {
 
   const findUserDetails = async () => {
     try {
+      context.alertDispatch({
+        type: ALERT_TYPES.REMOVE_ALERT,
+      });
       setLoading(true);
       const res = await CommonService.findUserDetailsFromIDNumber(nic || 'null');
       setLoading(false);
-      console.log('Response', res);
       if (!res?.data) {
         context.alertDispatch({
           type: ALERT_TYPES.SET_ALERT,
@@ -63,9 +66,19 @@ const AdminDashBoard = () => {
     }
   };
 
+  const setShowModal = () => {
+    setProfileData(null);
+  };
+
   return (
     <View>
       <View style={[tailwind(`mt-20`), styles.mainContainer]}>
+        <DetailsModal
+          showModal={profileData}
+          setShowModal={setShowModal}
+          title={nic}
+          details={profileData}
+        />
         <View style={[tailwind(`bg-gray-100 mx-5 rounded-xl`), styles.searchBox]}>
           <TextInput
             placeholder='ID Number'

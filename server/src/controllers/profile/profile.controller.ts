@@ -27,4 +27,10 @@ export class ProfileController {
     const data = await ProfileService.getProfileByNIC(_req?.params?.NIC);
     throw new SuccessResponse(201, { data });
   }
+
+  @AdminAuthHandler()
+  public static async updateVaccinateDetails(_req: Request, _res: Response) {
+    const data = await ProfileService.updateProfileDetails(_req?.params?.NIC, _req?.body?.status);
+    throw new SuccessResponse(201, { data });
+  }
 }
