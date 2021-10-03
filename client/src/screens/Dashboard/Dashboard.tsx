@@ -85,7 +85,9 @@ const DashBoard: FC = (): JSX.Element => {
             )}
           </Text>
         </View>
-
+        <TouchableOpacity onPress={logOut}>
+          <Text>Logout</Text>
+        </TouchableOpacity>
         <View
           style={[
             tailwind(`mt-2 py-2 px-4 bg-gray-100  w-5/6 rounded-2xl`),
@@ -134,11 +136,6 @@ const DashBoard: FC = (): JSX.Element => {
         <Text style={[tailwind(`mb-2 mx-6`), styles.countryText]}>Vaccinate Locations</Text>
         <LocationTable />
       </View>
-      {/* <Text>DashBoard</Text>
-      <Text>{context?.authState?.user?.NIC}</Text>
-      <TouchableOpacity onPress={logOut}>
-        <Text>Logout</Text>
-      </TouchableOpacity> */}
     </View>
   );
 };

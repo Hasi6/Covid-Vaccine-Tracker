@@ -21,6 +21,7 @@ export type RootStackParamList = {
   Dashboard: undefined;
   Loading: undefined;
   UpdateDetails: undefined;
+  AdminDashBoard: undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<

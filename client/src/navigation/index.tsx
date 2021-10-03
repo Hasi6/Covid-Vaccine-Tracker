@@ -1,6 +1,7 @@
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
+import AdminDashBoard from '../screens/AdminDashBoard/AdminDashBoard';
 import DashBoard from '../screens/Dashboard/Dashboard';
 import Loading from '../screens/Loding/Loading';
 import Login from '../screens/Login/Login';
@@ -29,6 +30,11 @@ function RootNavigator() {
       <Stack.Screen
         name='UpdateDetails'
         component={UpdateDetails}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name='AdminDashBoard'
+        component={AdminDashBoard}
         options={{ headerShown: false }}
       />
       <Stack.Screen name='NotFound' component={NotFoundScreen} options={{ title: 'Oops!' }} />

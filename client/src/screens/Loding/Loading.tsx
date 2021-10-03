@@ -17,7 +17,6 @@ const Loading: FC = (): JSX.Element => {
     if (context?.authState?.auth === null) {
       try {
         const res = await AuthService.whoIAMI();
-        navigate.navigate('Dashboard');
         context?.authDispatch({
           type: AUTH_TYPES.SET_USER,
           payload: {
@@ -34,7 +33,11 @@ const Loading: FC = (): JSX.Element => {
       navigate.navigate('Login');
       return;
     }
-    navigate.navigate('Dashboard');
+    if (context?.authState?.user?.role === 'NORMAL') {
+      navigate.navigate('Dashboard');
+      return;
+    }
+    navigate.navigate('AdminDashBoard');
     return;
   };
 
