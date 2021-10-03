@@ -6,7 +6,7 @@ export class LocationService {
       return await prismaLocation.findMany({
         where: {
           toDate: {
-            lt: new Date(),
+            gte: new Date(),
           },
         },
       });

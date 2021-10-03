@@ -89,5 +89,6 @@ model Location {
   fromDate DateTime
   toDate DateTime
   createdAt DateTime? @default(now())
+  timeRange String
   updatedAt DateTime? @updatedAt @default(now())
 }
