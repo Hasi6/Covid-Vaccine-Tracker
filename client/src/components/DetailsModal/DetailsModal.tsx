@@ -108,7 +108,7 @@ const DetailsModal: FC<IDetailsModalProps> = ({
           </VStack>
         </Modal.Body>
         <Text
-          style={tailwind('text-center bg-blue-800 py-2 my-2 rounded-full')}
+          style={tailwind('text-center bg-blue-800 py-2 my-2 rounded-full mx-3')}
           onPress={confirmUser}
         >
           {details?.vaccinateConfirm ? (

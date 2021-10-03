@@ -9,6 +9,9 @@ export class LocationService {
             gte: new Date(),
           },
         },
+        include: {
+          district: true,
+        },
       });
     } catch (err) {
       return [];

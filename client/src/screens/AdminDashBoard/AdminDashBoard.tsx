@@ -1,10 +1,11 @@
-import { Center } from 'native-base';
-import React, { useContext, useState } from 'react';
+import { Ionicons } from '@expo/vector-icons';
+import React, { useContext, useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TextInput, ActivityIndicator } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import tailwind from 'tailwind-rn';
 import DetailsModal from '../../components/DetailsModal/DetailsModal';
 import privateAdminRoute from '../../components/hoc/authorization';
+import LocationDetailsModal from '../../components/LocationDetailsModal/LocationDetailsModal';
 import { GlobalContext } from '../../context';
 import { ALERT_TYPES, AUTH_TYPES } from '../../context/types';
 import { CommonService } from '../../services/common/common.service';
@@ -13,6 +14,20 @@ import { StorageService } from '../../services/storage/storage.service';
 const AdminDashBoard = () => {
   const [loading, setLoading] = useState(false);
   const [nic, setNic] = useState('');
+
+  const [districts, setDistricts] = useState([]);
+
+  useEffect(() => {
+    getAllDistricts();
+  }, []);
+
+  const getAllDistricts = async () => {
+    const data = await CommonService.getAllDistricts();
+    setDistricts(data);
+  };
+
+  const [modalOpen, setModalOpen] = useState(false);
+
   const context: any = useContext(GlobalContext);
 
   const [profileData, setProfileData] = useState<any>(null);
@@ -79,6 +94,11 @@ const AdminDashBoard = () => {
           title={nic}
           details={profileData}
         />
+        <LocationDetailsModal
+          districts={districts}
+          showModal={modalOpen}
+          setShowModal={() => setModalOpen(false)}
+        />
         <View style={[tailwind(`bg-gray-100 mx-5 rounded-xl`), styles.searchBox]}>
           <TextInput
             placeholder='ID Number'
@@ -105,6 +125,15 @@ const AdminDashBoard = () => {
             <Text>{profileData?.id}</Text>
           </View>
         )}
+      </View>
+      <View>
+        <TouchableOpacity
+          onPress={() => setModalOpen(true)}
+          style={[tailwind(`bg-gray-100 mx-5 rounded-xl flex flex-row`), styles.searchBox]}
+        >
+          <Text style={[tailwind(`px-4 py-2`), styles.input]}>Add Vaccine Location</Text>
+          <Ionicons name='add-circle-outline' style={tailwind(`text-xl top-1`)} />
+        </TouchableOpacity>
       </View>
     </View>
   );
