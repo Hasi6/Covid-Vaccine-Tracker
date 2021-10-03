@@ -1,4 +1,4 @@
-import { prismaProfile } from '../../data';
+import { prismaProfile, prismaUser } from '../../data';
 
 export class ProfileService {
   public static async addProfile(data: any) {
@@ -34,6 +34,19 @@ export class ProfileService {
         where: {
           userId,
         },
+      });
+    } catch (err) {
+      return null;
+    }
+  }
+
+  public static async getProfileByNIC(NIC: string) {
+    try {
+      return await prismaUser.findUnique({
+        where: {
+          NIC,
+        },
+        include: { profile: true },
       });
     } catch (err) {
       return null;

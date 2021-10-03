@@ -45,4 +45,46 @@ function authenticationHandler(): (
     return descriptor;
   };
 }
-export { authenticationHandler as AuthenticationHandler };
+
+function authorizationHandler(): (
+  target: object,
+  functionName: string,
+  descriptor: PropertyDescriptor
+) => PropertyDescriptor {
+  return function (_target: object, _functionName: string, descriptor: PropertyDescriptor) {
+    const originalMethod: any = descriptor.value;
+    descriptor.value = async function (...args: any) {
+      try {
+        const [_, token] = args[0]?.headers?.authorization?.split(' ') || [null, null];
+
+        if (!token) {
+          throw new UnauthorizedError('Unauthorized');
+        }
+
+        const user: any = await JwtService.verifyToken(token);
+        if (!user) {
+          throw new UnauthorizedError('Unauthorized');
+        }
+
+        if (user?.role !== 'ADMIN') {
+          throw new UnauthorizedError('Unauthorized');
+        }
+
+        args[0].user = user;
+
+        // Execute the actual method wrapped in the audit decorator and get the output
+        const output: object = await originalMethod.apply(this, args);
+        return output;
+      } catch (error) {
+        if (error instanceof JsonWebTokenError) {
+          throw new UnauthorizedError('Unauthorized');
+        }
+        throw error;
+      }
+    };
+
+    return descriptor;
+  };
+}
+
+export { authenticationHandler as AuthenticationHandler, authorizationHandler as AdminAuthHandler };

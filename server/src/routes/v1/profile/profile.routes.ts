@@ -3,7 +3,8 @@ import { ProfileController } from '../../../controllers/profile/profile.controll
 
 const profileRouter: Router = Router();
 
-profileRouter.get('/', ProfileController.addProfile);
+profileRouter.get('/', ProfileController.getProfile);
+profileRouter.get('/:NIC', ProfileController.getProfileByNIC);
 profileRouter.post('/', ProfileController.addProfile);
 
 export default profileRouter;

@@ -83,4 +83,14 @@ export class CommonService {
       return null;
     }
   }
+
+  public static async findUserDetailsFromIDNumber(idNumber: string) {
+    try {
+      const res = await http.get(`/profile/${idNumber}`);
+      return res?.data?.data;
+    } catch (err) {
+      console.error(err);
+      return null;
+    }
+  }
 }
