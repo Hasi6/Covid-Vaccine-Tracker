@@ -5,3 +5,8 @@ export enum AUTH_TYPES {
 export enum PROFILE_TYPES {
   SET_PROFILE = 'SET_PROFILE',
 }
+
+export enum ALERT_TYPES {
+  SET_ALERT = 'SET_ALERT',
+  REMOVE_ALERT = 'REMOVE_ALERT',
+}

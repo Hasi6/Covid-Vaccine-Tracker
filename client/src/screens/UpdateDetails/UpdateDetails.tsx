@@ -12,7 +12,7 @@ import privateRoute from '../../components/hoc/authentication';
 import ModalDropDown from '../../components/ModalDropDown/ModalDropDown';
 import { CommonService } from '../../services/common/common.service';
 import { storage } from '../../config/firebase';
-import { PROFILE_TYPES } from '../../context/types';
+import { ALERT_TYPES, PROFILE_TYPES } from '../../context/types';
 
 const UpdateDetails = () => {
   const [loading, setLoading] = useState(false);
@@ -66,16 +66,18 @@ const UpdateDetails = () => {
   const profileDetails = async () => {
     try {
       const data = context?.profileState?.profile;
-      setSelectedDose(data?.dose === 'FIRST' ? 1 : 2);
-      setSelectedVaccine(data?.vaccineId);
-      setSelectedDistrict(data?.districtId);
-      await storage()
-        .ref(`vaccine_images`)
-        .child(`${context?.authState?.user?.NIC}`)
-        .getDownloadURL()
-        .then(async (url) => {
-          setImage(url);
-        });
+      if (data) {
+        setSelectedDose(data?.dose === 'FIRST' ? 1 : 2);
+        setSelectedVaccine(data?.vaccineId);
+        setSelectedDistrict(data?.districtId);
+        await storage()
+          .ref(`vaccine_images`)
+          .child(`${context?.authState?.user?.NIC}`)
+          .getDownloadURL()
+          .then(async (url) => {
+            setImage(url);
+          });
+      }
     } catch (err) {
       console.error(err);
     }
@@ -101,11 +103,27 @@ const UpdateDetails = () => {
           },
         },
       });
-      alert('Success');
+      context.alertDispatch({
+        type: ALERT_TYPES.SET_ALERT,
+        payload: {
+          alert: {
+            status: 'success',
+            title: 'Details Updated Successfully',
+          },
+        },
+      });
+      navigation.navigate('Dashboard');
     } catch (err) {
       setLoading(false);
-      console.error(err);
-      alert('Something went Wrong, Please Try Again');
+      context.alertDispatch({
+        type: ALERT_TYPES.SET_ALERT,
+        payload: {
+          alert: {
+            status: 'error',
+            title: 'Something went Wrong, Please Try Again',
+          },
+        },
+      });
     }
   };
 

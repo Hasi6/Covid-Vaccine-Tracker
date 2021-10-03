@@ -12,6 +12,7 @@ import {
   Poppins_400Regular,
   Poppins_300Light,
 } from '@expo-google-fonts/poppins';
+import AlertComponent from './src/components/Alert/Alert';
 
 const App = () => {
   let [fontsLoaded] = useFonts({
@@ -27,6 +28,7 @@ const App = () => {
       <GlobalProvider>
         <NativeBaseProvider>
           <SafeAreaProvider>
+            <AlertComponent />
             <Navigation />
             <StatusBar />
           </SafeAreaProvider>
