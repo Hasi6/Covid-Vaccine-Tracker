@@ -1,14 +1,13 @@
 import React, { FC } from 'react';
-import { StyleSheet, Text, View, ScrollView } from 'react-native';
-import { Table, TableWrapper, Row, Rows, Col } from 'react-native-table-component';
-import tailwind from 'tailwind-rn';
+import { StyleSheet, ScrollView } from 'react-native';
+import { Table, TableWrapper, Row, Rows } from 'react-native-table-component';
 
 interface ILocationTableProps {
   locations: any[];
 }
 
 const LocationTable: FC<ILocationTableProps> = ({ locations }): JSX.Element => {
-  const tableHead = ['Province', 'District', 'To Date', 'Time'];
+  const tableHead = ['Province', 'District', 'location', 'To Date', 'Time'];
 
   return (
     <ScrollView style={styles.container}>

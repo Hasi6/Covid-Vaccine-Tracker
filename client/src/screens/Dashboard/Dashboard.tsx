@@ -65,6 +65,7 @@ const DashBoard: FC = (): JSX.Element => {
         let data = [
           da?.district?.province?.En,
           da?.district?.En,
+          da.En,
           moment(da?.toDate).format('DD/MM/YYYY'),
           `${da?.fromTime} -- ${da?.toTime}`,
         ];
