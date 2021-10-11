@@ -9,7 +9,7 @@ import axios from 'axios';
 import { AuthService } from '../auth/auth.service';
 
 const http = axios.create({
-  baseURL: 'http://192.168.8.216:5000/api/v1',
+  baseURL: 'https://covid-tracker-hasi6.vercel.app/api/v1',
   timeout: 30000,
 });
 
