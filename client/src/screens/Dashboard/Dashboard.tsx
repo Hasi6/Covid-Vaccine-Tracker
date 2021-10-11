@@ -50,7 +50,7 @@ const DashBoard: FC = (): JSX.Element => {
       const data = await CommonService.getPreviousDetails();
       context.profileDispatch({
         type: PROFILE_TYPES.SET_PROFILE,
-        payload: { profile: data },
+        payload: { profile: data?.data },
       });
     } catch (err) {
       console.error(err);
@@ -80,14 +80,17 @@ const DashBoard: FC = (): JSX.Element => {
 
   useEffect(() => {
     getCovidDetails();
-    getProfileData();
+
     getAllLocations();
   }, []);
+
+  useEffect(() => {
+    getProfileData();
+  }, [context?.authState?.user]);
 
   const updateDetails = () => {
     navigation.navigate('UpdateDetails');
   };
-
   return (
     <View>
       <View style={styles.mainContainer}>

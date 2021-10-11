@@ -29,14 +29,15 @@ const Loading: FC = (): JSX.Element => {
         return;
       }
     }
-    if (context?.authState?.auth === false) {
-      navigate.navigate('Login');
-      return;
-    }
     if (context?.authState?.user?.role === 'NORMAL') {
       navigate.navigate('Dashboard');
       return;
     }
+    if (context?.authState?.auth === false) {
+      navigate.navigate('Login');
+      return;
+    }
+
     navigate.navigate('AdminDashBoard');
     return;
   };
